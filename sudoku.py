@@ -1,4 +1,4 @@
-def intialize_board(fileName)
+def intialize_board(fileName):
         with open(fileName, 'r') as file:
                 lines = file.readlines()
                 board = []
