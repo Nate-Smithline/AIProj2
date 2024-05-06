@@ -1,14 +1,4 @@
-def intialize_board(fileName):
-        file = open(fileName, 'r')
-        lines = file.readlines()
-        board = []
-        for line in lines:
-                board_row = []
-                for num in line.split():
-                        board_row.append(int(num))
-                board.append(board_row)
-        file.close()
-        return board
+
 
 def board_to_file(board, fileName):
         file = open(fileName, 'w')
@@ -49,3 +39,35 @@ def play_sudoku(board):
                                 board[row][col] = 0
         return False
 
+
+class Sodoku:
+        def __init__(self, fileName):
+                self.fileName = fileName
+                self.gameBoard = []
+
+                #initialize the board
+                self.initialize_board()
+
+                #testing
+                self.print_board()
+        
+        def initialize_board(self):
+                file = open(self.fileName, 'r')
+                lines = file.readlines()
+                for line in lines:
+                        board_row = []
+                        for num in line.split():
+                                board_row.append(int(num))
+                        self.gameBoard.append(board_row)
+                file.close()
+
+        #temporary function
+        def print_board(self):
+                for line in self.gameBoard:
+                        print(" ".join(map(str, line)))
+
+                
+
+
+
+sdk = Sodoku('Sample_Input.txt')
