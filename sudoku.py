@@ -50,13 +50,18 @@ class Sodoku:
 
 
 
+        """
+        PLAY_SODOKU
+
+        This is the master function that runs the backtracking and goes through everything 
+        """
         def play_sudoku(self):
                 empty = self.find_empty()
                 if not empty:
                         return True
                 row, col = empty
 
-                for num in self.order_domain_values():
+                for num in range(1,10):
                         if self.valid_value(row, col, num):
                                 self.game_board[row][col] = num
                                 if self.play_sudoku():
@@ -64,10 +69,6 @@ class Sodoku:
                                 else:
                                         self.game_board[row][col] = 0
                 return False
-
-
-        def order_domain_values(self):
-                return range(1, 10)
 
         """
         FIND EMPTY
@@ -80,6 +81,12 @@ class Sodoku:
                                 return i, row.index(0)
                 return False
 
+
+        """
+        VALID_VALUE
+
+        This function checks if the value found is valid in line. It is going search the row it is in, and try to find an error in it
+        """
         def valid_value(self, row, col, num):
                 for i in range(9):
                         if (self.game_board[row][i] == num or
