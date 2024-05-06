@@ -76,10 +76,72 @@ class Sodoku:
         this function is going to look through the board and find an empty square
         """
         def find_empty(self):
+                min_values = float('inf')
+                max_constraints = -1
+                selected_cell = None
+                
                 for i, row in enumerate(self.game_board):
-                        if 0 in row:
-                                return i, row.index(0)
-                return False
+                        for j, num in enumerate(row):
+                                if num == 0:
+                                        num_values = self.mrv(i, j)
+
+                                        constraints = self.dh_calculate(i, j)
+                                        
+                                        if num_values < min_values or (num_values == min_values and constraints > max_constraints):
+                                                min_values = num_values
+                                                max_constraints = constraints
+                                                selected_cell = (i, j)
+                return selected_cell                
+
+
+        """
+        MINIMUM REMAINING VALUES
+
+        This function calculates the number of values remaining in the entire setup
+        """
+        def mrv(self, row, col):
+                # set is more optimized for time complexity
+                used_nums = set()
+                
+                #calculate all related
+                for i in range(9):
+                        # add everything in the column
+                        used_nums.add(self.game_board[row][i])
+                        #add everything in the row
+                        used_nums.add(self.game_board[i][col])
+                        #add diagonals
+                        used_nums.add(self.game_board[3 * (row // 3) + i // 3][3 * (col // 3) + i % 3])
+
+                        if row == col:
+                                used_nums.add(self.game_board[i][i])
+                        if row + col == 8:
+                                used_nums.add(self.game_board[i][8 - i])
+
+                possible_values = [num for num in range(1, 10) if num not in used_nums]
+                return len(possible_values)
+        
+
+        """
+        DH CALCULATE
+
+        This function is going to calculate the degree heuristic (or number of items that are based on this)
+        
+        """
+        def dh_calculate(self, row, col):
+                num_constraints = 0
+                for indx in range(9):
+                        if self.game_board[row][indx] != 0:
+                                num_constraints += 1
+                        if self.game_board[indx][col] != 0:
+                                num_constraints += 1
+                        if self.game_board[3 * (row // 3) + indx // 3][3 * (col // 3) + indx % 3] != 0:
+                                num_constraints += 1
+                        if row == col and self.game_board[indx][indx] != 0:
+                                num_constraints += 1
+                        if row + col == 8 and self.game_board[indx][8 - indx] != 0:
+                                num_constraints += 1
+                
+                return num_constraints
 
 
         """
@@ -89,12 +151,16 @@ class Sodoku:
         """
         def valid_value(self, row, col, num):
                 for i in range(9):
-                        if (self.game_board[row][i] == num or
-                                self.game_board[i][col] == num or
-                                self.game_board[3 * (row // 3) + i // 3][3 * (col // 3) + i % 3] == num):
+                        if (self.game_board[row][i] == num or  self.game_board[i][col] == num):
+                                return False
+                        elif(self.game_board[3 * (row // 3) + i // 3][3 * (col // 3) + i % 3] == num): #3x3 block
+                                return False
+                        elif(row == col and self.game_board[i][i] == num): #45 diagonal
+                                return False
+                        elif((row + col == 8 and self.game_board[i][8 - i] == num)):  # Check 135 diagonal
                                 return False
                 return True
 
 
 
-sdk = Sodoku('nytimes_input.txt', 'NYtimes_output.txt')
+sdk = Sodoku('Sample_Input.txt', 'SampleIO.txt')
