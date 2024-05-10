@@ -231,6 +231,8 @@ class Sodoku:
             if self.game_board[row][i] == num or self.game_board[i][col] == num:
                 return False
             
+            if(self.game_board[3 * (row // 3) + i // 3][3 * (col // 3) + i % 3] == num):
+                return False
 
         #check for a diagonal match
         for i in range(3):
@@ -268,4 +270,4 @@ class Sodoku:
 
 
 
-sdk = Sodoku('Sample_Input.txt', 'Sample_Output.txt')
+sdk = Sodoku('nyti.txt', 'nyto.txt')
