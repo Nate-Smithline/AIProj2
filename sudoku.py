@@ -148,7 +148,11 @@ class Sodoku:
         return finalists
         
 
+    """
+    Degrees
 
+    This function is going to take the specific x and y on the sodoku board annd find the number of constraints on it, being the number of dependent blocks that are not 0
+    """
     def degrees(self, x, y):
         num_cnstrnts = 0
         
@@ -270,4 +274,4 @@ class Sodoku:
 
 
 
-sdk = Sodoku('nyti.txt', 'nyto.txt')
+sdk = Sodoku('Input3.txt', 'Input3_Out.txt')
